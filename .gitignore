@@ -1,0 +1,12 @@
+node_modules
+# File môi trường
+.env
+.env.*
+
+# File hệ thống
+.DS_Store
+.idea/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
