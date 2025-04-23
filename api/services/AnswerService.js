@@ -5,6 +5,9 @@ const Question = mongoose.model('Question');
 require('../models/UserModel');
 const User = mongoose.model('User');
 const emailService = require('./EmailService');
+require('../models/VoteModel');
+const Vote = mongoose.model('Vote');
+const voteService = require('./VoteService');
 
 const answerService = {
     getAnswers: async () => {
@@ -90,6 +93,23 @@ const answerService = {
 
     countAnswerByQuestionId: async (questionId) => {
         return Answer.countDocuments({ questionId: questionId });
+    },
+
+    getAnswersByQuestionIdAndScore: async (questionId) => {
+        const answers = await Answer.find({ questionId: questionId })
+            .populate('userId', 'name email');
+        
+        const answersWithScores = await Promise.all(
+            answers.map(async (answer) => {
+                const score = await voteService.countVotes(answer._id);
+                return {
+                    ...answer.toObject(),
+                    score
+                };
+            })
+        );
+        
+        return answersWithScores.sort((a, b) => b.score - a.score); 
     }
 };
 

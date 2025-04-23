@@ -9,6 +9,9 @@ module.exports = app => {
         .get(AnswerBuilder.listAllAnswersOfQuestion)
         .post(AnswerBuilder.createAnAnswer);
     app
+        .route('/questions/:questionId/answers/sortByScore')
+        .get(AnswerBuilder.listAllAnswersOfQuestionScore);
+    app
         .route('/questions/:questionId/answers/:answerId')
         .get(AnswerBuilder.readAnAnswer)
         .put(AnswerBuilder.updateAnAnswer)

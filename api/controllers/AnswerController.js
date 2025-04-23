@@ -26,6 +26,22 @@ const answerController = {
         }
     },
 
+    listAllAnswersOfQuestionScore: async (req, res) => {
+        try {
+            const { questionId } = req.params;
+
+            const answers = await answerService.getAnswersByQuestionIdAndScore(questionId);
+            
+            return res.status(200).json(answers);
+        } catch (error) {
+            console.error('Error getting answers:', error);
+            return res.status(error.status || 500).json({ 
+                success: false, 
+                message: error.message || 'Internal server error' 
+            });
+        }
+    },
+
     listAnswersByUserId: async (req, res) => {
         try {
             const { userId } = req.params;
